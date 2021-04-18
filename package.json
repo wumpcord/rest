@@ -1,0 +1,48 @@
+{
+  "name": "@wumpcord/rest",
+  "description": "🥀 Standalone package for Discord's REST and CDN made for Wumpcord",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "author": "August <cutie@floofy.dev>",
+  "license": "MIT",
+  "types": "index.d.ts",
+  "repository": "https://github.com/wumpcord/rest",
+  "bugs": "https://github.com/wumpcord/rest",
+  "files": [
+    "build/",
+    "index.d.ts"
+  ],
+  "funding": {
+    "url": "https://github.com/sponsors/auguwu"
+  },
+  "maintainers": [
+    "Chris \"August\" Hernandez <cutie@floofy.dev>"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "clean:node_modules": "rm -rf node_modules/@types/**/node_modules && rm -rf node_modules/@augu/**/node_modules",
+    "clean:win:tar": "cp node_modules/@augu/collections/build/index.js.* node_modules/@augu/collections/build/index.js && rm node_modules/@augu/collections/build/index.js.*",
+    "prepare": "npm run build",
+    "docgen": "typedoc src --out docs --theme node_modules/eledoc/bin/default/",
+    "build": "npm run lint && rm -rf src && tsc",
+    "lint": "eslint src --ext .ts --fix"
+  },
+  "dependencies": {
+    "form-data": "4.0.0",
+    "undici": "4.0.0-alpha.4"
+  },
+  "devDependencies": {
+    "@augu/eslint-config": "2.0.3",
+    "@augu/tsconfig": "1.1.0",
+    "@types/node": "14.14.41",
+    "@typescript-eslint/eslint-plugin": "4.22.0",
+    "@typescript-eslint/parser": "4.22.0",
+    "eledoc": "0.2.1",
+    "eslint": "7.24.0",
+    "husky": "6.0.0",
+    "typedoc": "0.20.35",
+    "typescript": "4.2.4"
+  }
+}
