@@ -8,7 +8,7 @@ import { createReadStream } from 'fs';
 
 // CDN
 CDN.getDefaultAvatar('5820'); //=> 'https://cdn.discordapp.com/embed/avatars/0.png'
-CDN.getUserAvatar('280158289667555328'); //=> 'https://cdn.discordapp.com/avatars/280158289667555328/...'
+CDN.getUserAvatar('280158289667555328', 'f788c8a8993bc702824700eda5623795'); //=> 'https://cdn.discordapp.com/avatars/280158289667555328/...'
 
 // Rest
 const rest = new RestClient('bot token');

@@ -26,12 +26,12 @@
     "clean:win:tar": "cp node_modules/@augu/collections/build/index.js.* node_modules/@augu/collections/build/index.js && rm node_modules/@augu/collections/build/index.js.*",
     "prepare": "npm run build",
     "docgen": "typedoc src --out docs --theme node_modules/eledoc/bin/default/",
-    "build": "npm run lint && rm -rf src && tsc",
+    "build": "npm run lint && rm -rf build && tsc",
     "lint": "eslint src --ext .ts --fix"
   },
   "dependencies": {
-    "form-data": "4.0.0",
-    "undici": "4.0.0-alpha.4"
+    "@augu/collections": "1.0.8",
+    "@augu/orchid": "3.0.1"
   },
   "devDependencies": {
     "@augu/eslint-config": "2.0.3",
