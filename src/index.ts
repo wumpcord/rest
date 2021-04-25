@@ -19,3 +19,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import {
+  ImageFormat,
+  ImageSize,
+  getAchivementIcon,
+  getApplicationIcon,
+  getApplicationAsset,
+  getChannelIcon,
+  getCustomEmoji,
+  getDefaultUserAvatar,
+  getGuildBanner,
+  getGuildDiscoverySplash,
+  getGuildIcon,
+  getGuildSplash,
+  getTeamIcon,
+  getUserAvatar,
+  BaseUrl
+} from './CDN';
+
+export { ImageFormat, ImageSize };
+export * as Constants from './Constants';
+export * from './errors/DiscordRestError';
+export * from './errors/DiscordAPIError';
+export * from './RestClient';
+
+export const version: string = require('../package.json').version;
+export const CDN = {
+  getAchivementIcon,
+  getApplicationIcon,
+  getApplicationAsset,
+  getChannelIcon,
+  getCustomEmoji,
+  getDefaultUserAvatar,
+  getGuildBanner,
+  getGuildDiscoverySplash,
+  getGuildIcon,
+  getGuildSplash,
+  getTeamIcon,
+  getUserAvatar,
+  BaseUrl
+};

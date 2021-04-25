@@ -21,10 +21,10 @@
  */
 
 import { DataLike, HttpClient, HttpMethod, middleware } from '@augu/orchid';
-import { EventBus, sleep, isObject } from '@augu/utils';
 import { CancellationTokens } from './sequential/CancellationToken';
 import { DiscordRestError } from './errors/DiscordRestError';
 import { DiscordAPIError } from './errors/DiscordAPIError';
+import { EventBus, sleep } from '@augu/utils';
 import { STATUS_CODES } from 'http';
 import type { Agent } from 'undici';
 import { APIUrl } from './Constants';
