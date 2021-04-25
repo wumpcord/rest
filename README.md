@@ -3,8 +3,8 @@
 
 ## Usage
 ```ts
-import { RestClient, CDN, DiscordRestError, DiscordAPIError, RatelimitError } from '@wumpcord/rest';
-import { createReadStream } from 'fs';
+import { RestClient, CDN, DiscordRestError, DiscordAPIError } from '@wumpcord/rest';
+import { readFileSync } from 'fs';
 
 // CDN
 CDN.getDefaultAvatar('5820'); //=> 'https://cdn.discordapp.com/embed/avatars/0.png'
@@ -22,7 +22,7 @@ rest.dispatch({
     content: 'Hello, world!'
   },
   file: {
-    buffer: createReadStream('./path/to/some/file.png'),
+    file: readFileSync('./path/to/some/file.png'),
     name: 'file.png'
   }
 }).then(message => {
@@ -38,11 +38,6 @@ rest.dispatch({
   // Maybe it's an API error?
   if (error instanceof DiscordAPIError) {
     // `error` => DiscordAPIError
-  }
-
-  // How about we were ratelimited?
-  if (error instanceof RatelimitError) {
-    // `error` => RatelimitError
   }
 
   // I guess it's none of those 3, how can it happen?
