@@ -23,7 +23,7 @@
 /**
  * The rest version for requesting to Discord
  */
-export const RestVersion = 8;
+export const RestVersion = 9;
 
 /**
  * Returns the API url for creating requests towards Discord.
