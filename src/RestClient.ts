@@ -287,6 +287,14 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
     // @ts-ignore
     this.emit('debug', `[REST -> ${options.method.toUpperCase()} ${options.endpoint}] Received a ${res.statusCode} status code!`);
 
+    // @ts-ignore
+    this.emit('call', (<RestCallProperties> {
+      ratelimited: res.statusCode === 429,
+      status: STATUS_CODES[res.statusCode],
+      body: res.text(),
+      ping: this.ping
+    }));
+
     const limit = res.headers['x-ratelimit-limit'] as string;
     const _remaining = res.headers['x-ratelimit-remaining'] as string;
     const resetAfter = res.headers['x-ratelimit-reset-after'] as string;

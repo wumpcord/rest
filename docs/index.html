@@ -1,0 +1,185 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@wumpcord/rest</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@wumpcord/rest</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="modules.html">Globals</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+<div class="container">
+	<div class="row container container-main">
+		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>📑 Index</li>
+					<li><br></li>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/cdn.html">CDN</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/constants.html">Constants</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/restclient.html">Rest<wbr>Client</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/errors_discordapierror.html">errors/<wbr>DiscordAPIError</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/errors_discordresterror.html">errors/<wbr>Discord<wbr>Rest<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/sequential_cancellationtoken.html">sequential/<wbr>Cancellation<wbr>Token</a>
+				</li>                </ul>
+			</nav>
+		</div>
+		<div class="col-9 col-content">
+			<div class="tsd-panel">
+				<a href="#wumpcordrest" id="wumpcordrest" style="color: inherit; text-decoration: none;">
+					<h1>@wumpcord/rest</h1>
+				</a>
+				<blockquote>
+					<p>🥀 <strong>Standalone package for Discord&#39;s REST and CDN for Wumpcord</strong></p>
+				</blockquote>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<pre><code class="language-ts"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">RestClient</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">CDN</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">DiscordRestError</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">DiscordAPIError</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">RatelimitError</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">@wumpcord/rest</span><span style="color: #ECEFF4">&#039;</span><span style="color: #81A1C1">;</span>
+<span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">createReadStream</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">fs</span><span style="color: #ECEFF4">&#039;</span><span style="color: #81A1C1">;</span>
+
+<span style="color: #616E88">// CDN</span>
+<span style="color: #D8DEE9">CDN</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">getDefaultAvatar</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">5820</span><span style="color: #ECEFF4">&#039;</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">//=&gt; &#039;https://cdn.discordapp.com/embed/avatars/0.png&#039;</span>
+<span style="color: #D8DEE9">CDN</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">getUserAvatar</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">280158289667555328</span><span style="color: #ECEFF4">&#039;</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">f788c8a8993bc702824700eda5623795</span><span style="color: #ECEFF4">&#039;</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">//=&gt; &#039;https://cdn.discordapp.com/avatars/280158289667555328/...&#039;</span>
+
+<span style="color: #616E88">// Rest</span>
+<span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">rest</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">new</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">RestClient</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">bot token</span><span style="color: #ECEFF4">&#039;</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span>
+<span style="color: #D8DEE9">rest</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">dispatch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">endpoint</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">/channels/:id/messages</span><span style="color: #ECEFF4">&#039;</span><span style="color: #ECEFF4">,</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">method</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">POST</span><span style="color: #ECEFF4">&#039;</span><span style="color: #ECEFF4">,</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">query</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">794102278004932648</span><span style="color: #ECEFF4">&#039;</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">data</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">content</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">Hello, world!</span><span style="color: #ECEFF4">&#039;</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">file</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">buffer</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">createReadStream</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">./path/to/some/file.png</span><span style="color: #ECEFF4">&#039;</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span>
+<span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">&#039;</span><span style="color: #A3BE8C">file.png</span><span style="color: #ECEFF4">&#039;</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span>
+<span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">message</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=&gt;</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// `message` =&gt; https://discord.com/developers/docs/resources/channel#message-object</span>
+<span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">catch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">error</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=&gt;</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// uh oh! we received a error, what do we do???</span>
+
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// Maybe it&#039;s a REST error?</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">instanceof</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">DiscordRestError</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span>
+<span style="color: #ECEFF4">    </span><span style="color: #616E88">// `error` =&gt; DiscordRestError</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span>
+
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// Maybe it&#039;s an API error?</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">instanceof</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">DiscordAPIError</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span>
+<span style="color: #ECEFF4">    </span><span style="color: #616E88">// `error` =&gt; DiscordAPIError</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span>
+
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// How about we were ratelimited?</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">instanceof</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">RatelimitError</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span>
+<span style="color: #ECEFF4">    </span><span style="color: #616E88">// `error` =&gt; RatelimitError</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span>
+
+<span style="color: #ECEFF4">  </span><span style="color: #616E88">// I guess it&#039;s none of those 3, how can it happen?</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">console</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">error</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span>
+<span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span>
+</code></pre>
+			</div>
+			<footer class="with-border-bottom">
+				<div class="tsd-legend-group">
+					<ul class="tsd-legend">
+						<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+						<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+						<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+						<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+						<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+						<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+						<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+						<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+					</ul>
+				</div>
+			</footer>
+			<div>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></div>
+		</div>
+	</div>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
