@@ -304,3 +304,6 @@ declare namespace Rest {
     public dispatch<D extends DataLike | unknown = unknown, TReturn = unknown>(options: RequestDispatchOptions<D>): Promise<TReturn>;
   }
 }
+
+export = Rest;
+export as namespace Rest;
