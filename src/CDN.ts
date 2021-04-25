@@ -19,7 +19,7 @@ export type ImageFormat =
 /**
  * Type alias of what image sizes Discord supports
  */
-export type ImageSize = 1024; // todo: this
+export type ImageSize = 16 | 32 | 64 | 128 | 265 | 512 | 1024 | 2048 | 4096;
 
 export const getAchivementIcon = (appID: string, achivementID: string, icon: string) => `${BaseUrl}/app-assets/${appID}/achivements/${achivementID}/icons/${icon}`;
 export const getApplicationAsset =                    (appID: string, asset: string) => `${BaseUrl}/app-assets/${appID}/${asset}`;
