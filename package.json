@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@augu/collections": "1.0.8",
-    "@augu/orchid": "3.0.1",
+    "@augu/orchid": "3.0.3",
     "@augu/utils": "1.5.0",
     "form-data": "4.0.0"
   },
@@ -42,9 +42,9 @@
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
     "eledoc": "0.2.1",
-    "eslint": "7.24.0",
+    "eslint": "7.25.0",
     "husky": "6.0.0",
-    "typedoc": "0.20.35",
+    "typedoc": "0.20.36",
     "typescript": "4.2.4"
   }
 }
