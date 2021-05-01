@@ -21,19 +21,24 @@
  */
 
 import { DataLike, HttpClient, HttpMethod, middleware } from '@augu/orchid';
+import { APIUrl, RestVersion, SupportedVersions } from './Constants';
 import { CancellationTokens } from './sequential/CancellationToken';
 import { DiscordRestError } from './errors/DiscordRestError';
 import { DiscordAPIError } from './errors/DiscordAPIError';
 import { EventBus, sleep } from '@augu/utils';
 import { STATUS_CODES } from 'http';
 import type { Agent } from 'undici';
-import { APIUrl } from './Constants';
 import FormData from 'form-data';
 
 /**
  * Rest client options to override
  */
 export interface RestClientOptions {
+  /**
+   * Overrides the REST version for this [[RestClient]]
+   */
+  restVersion?: 8 | 9;
+
   /**
    * The base URL
    */
@@ -122,6 +127,8 @@ export interface RestClientEvents {
  */
 export interface RestCallProperties {
   ratelimited: boolean;
+  endpoint: string;
+  method: HttpMethod;
   status: string;
   body: string;
   ping: number;
@@ -172,7 +179,7 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
   /**
    * List of options available
    */
-  public options: Pick<RestClientOptions, 'baseUrl'> & { token: string | null; agent: Agent | null; };
+  public options: Omit<RestClientOptions, 'token' | 'agent'> & { token: string | null; agent: Agent | null; };
   #client: HttpClient;
 
   /**
@@ -182,10 +189,16 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
   constructor(options: RestClientOptions) {
     super();
 
+    if (options !== undefined && options.restVersion !== undefined) {
+      if (!SupportedVersions.includes(options.restVersion))
+        throw new TypeError(`API v${options.restVersion} is not supported.`);
+    }
+
     this.options = {
-      baseUrl: options.baseUrl ?? APIUrl,
-      agent: options.agent ?? null,
-      token: options.token ?? null
+      restVersion: options?.restVersion ?? RestVersion,
+      baseUrl: options?.baseUrl ?? APIUrl(options?.restVersion ?? RestVersion),
+      agent: options?.agent ?? null,
+      token: options?.token ?? null
     };
 
     this.#client = new HttpClient({
@@ -290,7 +303,10 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
     // @ts-ignore
     this.emit('call', (<RestCallProperties> {
       ratelimited: res.statusCode === 429,
+      endpoint: options.endpoint,
+      method: options.method,
       status: STATUS_CODES[res.statusCode],
+      query: options.query,
       body: res.text(),
       ping: this.ping
     }));

@@ -33,16 +33,6 @@ export interface CancellationToken<T> {
    * The promise for this [[CancellationToken]]
    */
   promise: Promise<T>;
-
-  /**
-   * The state of this [[CancellationToken]].
-   *
-   * - `ongoing`: This cancellation token is ongoing it's execution process
-   * - `resolved`: This cancellation token was resolved successfuly
-   * - `cancelled`: This cancellation token was cancelled using the [[CancellationToken.cancel]] function.
-   * - `just_init`: This cancellation token was just initialized from [[CancellationTokens.]]
-   */
-  state: 'ongoing' | 'resolved' | 'cancelled' | 'just_init';
 }
 
 /**
@@ -78,7 +68,6 @@ export class CancellationTokens {
   next() {
     const token = this._tokens.shift();
     if (token !== undefined) {
-      token.state = 'resolved';
       return token.resolve(null);
     }
   }
@@ -89,8 +78,7 @@ export class CancellationTokens {
     const promise = new Promise<void>((r) => (resolve = r));
     const token: CancellationToken<void> = {
       resolve,
-      promise,
-      state: 'just_init'
+      promise
     };
 
     this._tokens.push(token);

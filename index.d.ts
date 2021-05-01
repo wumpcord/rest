@@ -81,16 +81,6 @@ declare namespace Rest {
      * The promise for this [[CancellationToken]]
      */
     promise: Promise<T>;
-
-    /**
-     * The state of this [[CancellationToken]].
-     *
-     * - `ongoing`: This cancellation token is ongoing it's execution process
-     * - `resolved`: This cancellation token was resolved successfuly
-     * - `cancelled`: This cancellation token was cancelled using the [[CancellationToken.cancel]] function.
-     * - `just_init`: This cancellation token was just initialized from [[CancellationTokens.]]
-     */
-    state: 'ongoing' | 'resolved' | 'cancelled' | 'just_init';
   }
 
   /**
@@ -151,6 +141,20 @@ declare namespace Rest {
       format?: ImageFormat,
       size?: ImageSize
     ): string;
+  }
+
+  export interface Constants {
+    APIUrl(version?: number): string;
+
+    /**
+     * The supported rest versions
+     */
+    SupportedVersions: number[];
+
+    /**
+     * The current rest version (overrided)
+     */
+    RestVersion: 9;
   }
 
   /**
@@ -245,7 +249,10 @@ declare namespace Rest {
    */
   export interface RestCallProperties {
     ratelimited: boolean;
+    endpoint: string;
+    method: HttpMethod;
     status: string;
+    query?: Record<string, string>;
     body: string;
     ping: number;
   }

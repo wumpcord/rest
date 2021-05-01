@@ -29,4 +29,9 @@ export const RestVersion = 9;
  * Returns the API url for creating requests towards Discord.
  * If you want to override this, use the [[RestClientOptions.baseURL]] option.
  */
-export const APIUrl = `https://discord.com/api/v${RestVersion}`;
+export const APIUrl = (version: number = RestVersion) => `https://discord.com/api/v${version}`;
+
+/**
+ * The supported rest versions
+ */
+export const SupportedVersions = [8, 9];
