@@ -32,7 +32,7 @@
   "dependencies": {
     "@augu/collections": "1.0.8",
     "@augu/orchid": "3.1.1",
-    "@augu/utils": "1.5.1",
+    "@augu/utils": "1.5.3",
     "form-data": "4.0.0"
   },
   "devDependencies": {
