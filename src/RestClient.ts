@@ -27,6 +27,8 @@ import { DiscordRestError } from './errors/DiscordRestError';
 import { DiscordAPIError } from './errors/DiscordAPIError';
 import { EventBus, sleep } from '@augu/utils';
 import { STATUS_CODES } from 'http';
+import { RouteBucket } from './sequential/RouteBucket';
+import { Collection } from '@augu/collections';
 import type { Agent } from 'undici';
 import FormData from 'form-data';
 
@@ -97,8 +99,19 @@ export interface RequestDispatchOptions<D = unknown> {
   data?: D;
 }
 
+/**
+ * Represents a file to send on Discord
+ */
 export interface MessageFile {
+  /**
+   * The name of the file
+   * @default 'file.png'
+   */
   name?: string;
+
+  /**
+   * The file contents to send
+   */
   file: Buffer;
 }
 
@@ -137,7 +150,7 @@ export interface RestCallProperties {
 /**
  * The rest client to create requests to Discord
  */
-export class RestClient<E extends RestClientEvents = RestClientEvents> extends EventBus<E> {
+export class RestClient extends EventBus<RestClientEvents> {
   protected _globalTimeout: Promise<any> | null = null;
   protected _retryAfter: number | null = null;
 
@@ -152,34 +165,19 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
   public lastDispatchAt: number = 0;
 
   /**
-   * If the rest client has been ratelimited or not
-   */
-  public ratelimited: boolean = false;
-
-  /**
-   * How many requests we can make
-   */
-  public remaining: number = 0;
-
-  /**
-   * The reset time
-   */
-  public resetTime: number = -1;
-
-  /**
-   * The limit of requests
-   */
-  public limit: number = -1;
-
-  /**
    * Represents the current cancellation token list
    */
   public clsToken: CancellationTokens = new CancellationTokens();
 
   /**
+   * List of routes available for ratelimiting
+   */
+  public routes: Collection<string, RouteBucket>;
+
+  /**
    * List of options available
    */
-  public options: Omit<RestClientOptions, 'token' | 'agent'> & { token: string | null; agent: Agent | null; };
+  public options: Required<Omit<RestClientOptions, 'token' | 'agent'>> & { token: string | null; agent: Agent | null; };
   #client: HttpClient;
 
   /**
@@ -201,12 +199,15 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
       token: options?.token ?? null
     };
 
+    this.routes = new Collection();
     this.#client = new HttpClient({
       defaults: {
         headers: options.token !== undefined ? { Authorization: `Bot ${options.token}` } : {}
       },
 
-      userAgent: 'DiscordBot (+https://github.com/auguwu/Wumpcord)'
+      userAgent: 'DiscordBot (+https://github.com/auguwu/Wumpcord)',
+      basePath: `/api/v${this.options.restVersion}`,
+      baseUrl: 'https://discord.com'
     });
   }
 
@@ -217,20 +218,10 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
   }
 
   async dispatch<D extends DataLike | unknown = unknown, TReturn = unknown>(options: RequestDispatchOptions<D>) {
-    this._setupLogging();
+    //this._setupLogging();
     await this.clsToken.run();
 
     try {
-      if (this._globalTimeout !== null) {
-        await this._globalTimeout;
-      }
-
-      if (this.ratelimited) {
-        // @ts-ignore why are u like this
-        this.emit('ratelimited');
-        await sleep(this._retryAfter!);
-      }
-
       this.lastDispatchAt = Date.now();
       return this._execute<D, TReturn>(options);
     } finally {
@@ -243,8 +234,6 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
     if (listeners > 0 && !this.#client.middleware.has('logging')) {
       this.#client.use(middleware.logging({
         useConsole: false,
-
-        // @ts-ignore "Argument of type '[string]' is not assignable to parameter of type 'ListenerArgs<E["debug"]>'."
         log: (message) => this.emit('debug', `[HTTP] ${message}`)
       }));
     }
@@ -252,9 +241,12 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
 
   protected async _execute<D extends DataLike | unknown = unknown, TReturn = unknown>(options: RequestDispatchOptions<D>): Promise<TReturn | undefined> {
     const form = options.file !== undefined ? new FormData() : null;
-    const headers: Record<string, any> = {
+    if (options.auth === true && this.options.token === null)
+      throw new RangeError('This route requires authenication');
+
+    const headers: Record<string, any> = options.auth === true ? {
       Authorization: `Bot ${this.options.token}`
-    };
+    } : {};
 
     if (options.method !== 'GET' && options.method !== 'HEAD' && options.method !== 'get' && options.method !== 'head') {
       headers['content-type'] = form !== null ? form.getHeaders()['content-type'] : 'application/json';
@@ -288,8 +280,10 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
       method: options.method,
       query: options.query,
       data: (form !== null ? form : options.data) as any,
-      url: `${this.options.baseUrl}${options.endpoint}`
+      url: options.endpoint
     });
+
+    const bucket = this.routes.emplace(options.endpoint, new RouteBucket(options.endpoint));
 
     if (res.statusCode === 204)
       return;
@@ -297,10 +291,7 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
     this.lastRequestedAt = Date.now();
     const data = res.json();
 
-    // @ts-ignore
-    this.emit('debug', `[REST -> ${options.method.toUpperCase()} ${options.endpoint}] Received a ${res.statusCode} status code!`);
-
-    // @ts-ignore
+    this.emit('debug', `[REST -> "${options.method.toUpperCase()} ${options.endpoint}"] Received a ${res.statusCode} status code!`);
     this.emit('call', (<RestCallProperties> {
       ratelimited: res.statusCode === 429,
       endpoint: options.endpoint,
@@ -311,32 +302,10 @@ export class RestClient<E extends RestClientEvents = RestClientEvents> extends E
       ping: this.ping
     }));
 
-    const limit = res.headers['x-ratelimit-limit'] as string;
-    const _remaining = res.headers['x-ratelimit-remaining'] as string;
-    const resetAfter = res.headers['x-ratelimit-reset-after'] as string;
-    let retryAfter = res.headers['x-ratelimit-retry'] as string | number;
-    const via = res.headers['via'];
-
-    this.resetTime = +resetAfter * 1000 + Date.now(); // TODO: add offset?
-    this.remaining = _remaining !== undefined ? +_remaining : 1;
-    this.limit = limit !== undefined ? +limit : Infinity;
-
-    if (retryAfter !== undefined)
-      retryAfter = resetAfter
-        ? Number(retryAfter) + (via !== undefined ? 1000 : 1 + 0)
-        : Date.now();
-
-    if (res.headers['x-ratelimit-global'] !== undefined)
-      this._globalTimeout = sleep(Number(retryAfter)).then(() => (this._globalTimeout = null));
-
-    if (res.statusCode === 429) {
-      // @ts-ignore
-      this.emit('debug', `[REST -> ${options.method.toUpperCase()} ${options.endpoint}] Ratelimited.`);
-
-      this.ratelimited = true;
-      await sleep(Number(retryAfter));
-
-      return this._execute(options);
+    await bucket.handle(res);
+    if (bucket.ratelimited) {
+      this.emit('ratelimited');
+      await sleep(bucket.resetTime < 0 ? 0 : bucket.resetTime - Date.now());
     }
 
     if (res.statusCode >= 500)

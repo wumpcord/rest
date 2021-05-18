@@ -20,7 +20,8 @@
  * SOFTWARE.
  */
 
-import { HttpMethod, DataLike } from '@augu/orchid';
+import { HttpMethod, DataLike, Response } from '@augu/orchid';
+import { Collection } from '@augu/collections';
 import { EventBus } from '@augu/utils';
 import { Agent } from 'undici';
 
@@ -219,8 +220,19 @@ declare namespace Rest {
     data?: D;
   }
 
+  /**
+   * Represents a file to send on Discord
+   */
   export interface MessageFile {
+    /**
+     * The name of the file
+     * @default 'file.png'
+     */
     name?: string;
+
+    /**
+     * The file contents to send
+     */
     file: Buffer;
   }
 
@@ -272,29 +284,14 @@ declare namespace Rest {
     public lastDispatchAt: number;
 
     /**
-     * If the rest client has been ratelimited or not
-     */
-    public ratelimited: boolean;
-
-    /**
-     * How many requests we can make
-     */
-    public remaining: number;
-
-    /**
-     * The reset time
-     */
-    public resetTime: number;
-
-    /**
-     * The limit of requests
-     */
-    public limit: number;
-
-    /**
      * Represents the current cancellation token list
      */
     public clsToken: CancellationTokens;
+
+    /**
+     * List of routes for ratelimiting purposes
+     */
+    public routes: Collection<string, RouteBucket>;
 
     /**
      * List of options available
@@ -309,6 +306,48 @@ declare namespace Rest {
 
     public get ping(): number;
     public dispatch<D extends DataLike | unknown = unknown, TReturn = unknown>(options: RequestDispatchOptions<D>): Promise<TReturn>;
+  }
+
+  /**
+   * Represents a ratelimit buckets for specific routes
+   */
+  export class RouteBucket {
+    /**
+     * The global ratelimit promise
+     */
+    public static globalRatelimit: Promise<void> | null;
+
+    /**
+     * The route this [`RouteBucket`] belongs to
+     */
+    public readonly route: string;
+
+    /**
+     * The reset time for ratelimiting purposes
+     */
+    public resetTime: number;
+
+    /**
+     * The remaining times before we reach a 429 status
+     */
+    public remaining: number;
+
+    /**
+     * If this [`RouteBucket`] has been ratelimited or not
+     */
+    public get ratelimited(): boolean;
+
+    /**
+     * Returns the offset given by Discord's server date and our server date
+     * @param serverDate The date in milliseconds Discord has gaven us
+     */
+    public getOffset(serverDate: string): number;
+
+    /**
+     * Handles the ratelimiting for this [`RouteBucket`]
+     * @param res The orchid response
+     */
+    public handle(res: Response): Promise<void>;
   }
 }
 
