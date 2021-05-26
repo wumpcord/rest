@@ -25,7 +25,7 @@
     "clean:node_modules": "rm -rf node_modules/@types/**/node_modules && rm -rf node_modules/@augu/**/node_modules",
     "clean:win:tar": "cp node_modules/@augu/collections/build/index.js.* node_modules/@augu/collections/build/index.js && rm node_modules/@augu/collections/build/index.js.*",
     "prepare": "npm run clean:node_modules && npm run build",
-    "docgen": "typedoc src --out docs --theme node_modules/eledoc/bin/default/",
+    "docgen": "typedoc src --json ./docs/out.json",
     "build": "npm run lint && rm -rf build && tsc",
     "lint": "eslint src --ext .ts --fix"
   },
@@ -41,7 +41,6 @@
     "@types/node": "15.3.1",
     "@typescript-eslint/eslint-plugin": "4.25.0",
     "@typescript-eslint/parser": "4.25.0",
-    "eledoc": "0.2.1",
     "eslint": "7.27.0",
     "husky": "6.0.0",
     "typedoc": "0.20.36",
