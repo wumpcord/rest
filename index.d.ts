@@ -119,7 +119,7 @@ declare namespace Rest {
     */
   export type ImageSize = 16 | 32 | 64 | 128 | 265 | 512 | 1024 | 2048 | 4096;
 
-  export interface CDN {
+  export interface _CDN {
     /**
      * The base URL for pointing to the CDN
      */
@@ -143,6 +143,8 @@ declare namespace Rest {
       size?: ImageSize
     ): string;
   }
+
+  export const CDN: _CDN;
 
   export interface Constants {
     APIUrl(version?: number): string;
