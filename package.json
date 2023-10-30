@@ -43,7 +43,7 @@
     "@typescript-eslint/parser": "5.36.1",
     "eslint": "8.23.0",
     "husky": "8.0.3",
-    "typedoc": "0.25.2",
+    "typedoc": "0.25.3",
     "typescript": "5.1.6"
   }
 }
