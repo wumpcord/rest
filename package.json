@@ -41,7 +41,7 @@
     "@types/node": "20.12.4",
     "@typescript-eslint/eslint-plugin": "5.36.1",
     "@typescript-eslint/parser": "5.36.1",
-    "eslint": "8.23.0",
+    "eslint": "9.13.0",
     "husky": "9.0.11",
     "typedoc": "0.25.12",
     "typescript": "5.1.6"
